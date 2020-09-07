@@ -36,7 +36,8 @@ Public Class Form1
     End Sub
 
     Private Async Function onMessage(message As SocketMessage) As Task
-        MsgBox(message.Author.Username & vbCrLf & message.Content) ' MsgBox is just an example do what you want
+        'MsgBox(message.Author.Username & vbCrLf & message.Content) ' MsgBox is just an example do what you want
+        'the above line was for testing purposes, un comment if needed just be aware it stops the app until you close the messagebox window.
         'Return onMessage.
         If message.Author.Username = "### YOUR BOTS NAME ###" Then ' Your bot name (otherwise youll get a ban from discord itself more likely youll spam yourself and whatever channel until you kill the bot)
             'Ignore
