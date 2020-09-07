@@ -40,6 +40,7 @@ Public Class Form1
         'the above line was for testing purposes, un comment if needed just be aware it stops the app until you close the messagebox window.
         'Return onMessage.
         If message.Author.Username = "### YOUR BOTS NAME ###" Then ' Your bot name (otherwise youll get a ban from discord itself more likely youll spam yourself and whatever channel until you kill the bot)
+            'The reason this if statement is here, is because you get sent back the messages that you send.
             'Ignore
         Else
             ' Just a test send read right side.
