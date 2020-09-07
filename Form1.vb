@@ -8,7 +8,6 @@ Public Class Form1
     Dim WithEvents discordEv As New DiscordSocketClient
 
     Private Async Function Connect(tt As TokenType, tstr As String) As Task
-        AddHandler discordEv.MessageReceived, AddressOf onMessage
         Await discordEv.LoginAsync(tt, tstr)
         Await discordEv.StartAsync()
 
@@ -20,6 +19,9 @@ Public Class Form1
     End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+        ' Add the onMessage handler
+        AddHandler discordEv.MessageReceived, AddressOf onMessage
+        
         ' Connect Discord
         Try
             Dim dotask As Task = Connect(TokenType.Bot, "############### YOUR oAuthToken ###############")
@@ -35,7 +37,13 @@ Public Class Form1
 
     Private Async Function onMessage(message As SocketMessage) As Task
         MsgBox(message.Author.Username & vbCrLf & message.Content) ' MsgBox is just an example do what you want
+        'Return onMessage.
+        If message.Author.Username = "### YOUR BOTS NAME ###" Then ' Your bot name (otherwise youll get a ban from discord itself more likely youll spam yourself and whatever channel until you kill the bot)
+            'Ignore
+        Else
+            ' Just a test send read right side.
+            Await message.Channel.SendMessageAsync("Test") 'Bot must have user permissions in the channel to send message, unless it was a private DM
+        End If
     End Function
-
 
 End Class
