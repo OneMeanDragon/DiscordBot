@@ -19,7 +19,7 @@ Public Class Form1
     End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ' Add the onMessage handler
+        AddHandler discordEv.Ready, AddressOf onReady
         AddHandler discordEv.MessageReceived, AddressOf onMessage
         
         ' Connect Discord
@@ -32,8 +32,27 @@ Public Class Form1
 
     Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         ' Disconnect Discord
-        Dim dotask As Task = Disconnect()
+        If discordEv.LoginState = LoginState.LoggedIn Then
+            Dim dotask As Task = Disconnect()
+        End If
+        discordEv.StopAsync()
     End Sub
+    
+    Private Delegate Sub mUpdateCaption(ByVal sCaption As String)
+    Private Sub UpdateCaption(ByVal sCaption As String)
+        If Me.InvokeRequired() Then
+            Dim udcap As New mUpdateCaption(AddressOf UpdateCaption)
+            Me.Invoke(udcap, sCaption)
+        Else
+            Me.Text = sCaption
+        End If
+    End Sub
+
+    Private Function onReady() As Task
+        UpdateCaption("Logged on as: " + discordEv.CurrentUser.Username) 'LoggedIn event still dosent capture CurrentUser info, so stuck with this.
+
+        Return Task.CompletedTask
+    End Function
     
     Private Async Function onMessage(message As SocketMessage) As Task
         'MsgBox(message.Author.Username & vbCrLf & message.Content) ' MsgBox is just an example do what you want
