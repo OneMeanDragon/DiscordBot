@@ -34,16 +34,14 @@ Public Class Form1
         ' Disconnect Discord
         Dim dotask As Task = Disconnect()
     End Sub
-
+    
     Private Async Function onMessage(message As SocketMessage) As Task
         'MsgBox(message.Author.Username & vbCrLf & message.Content) ' MsgBox is just an example do what you want
-        'the above line was for testing purposes, un comment if needed just be aware it stops the app until you close the messagebox window.
-        'Return onMessage.
-        If message.Author.Username = "### YOUR BOTS NAME ###" Then ' Your bot name (otherwise youll get a ban from discord itself more likely youll spam yourself and whatever channel until you kill the bot)
+
+        If message.Author.Id = discordEv.CurrentUser.Id Then 'Check if self message
             'The reason this if statement is here, is because you get sent back the messages that you send.
             'Ignore
         Else
-            ' Just a test send read right side.
             Await message.Channel.SendMessageAsync("Test") 'Bot must have user permissions in the channel to send message, unless it was a private DM
         End If
     End Function
