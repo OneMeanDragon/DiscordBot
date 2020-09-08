@@ -18,24 +18,25 @@ Public Class Form1
         Await discordEv.LogoutAsync()
     End Function
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Async Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
         AddHandler discordEv.Ready, AddressOf onReady
         AddHandler discordEv.MessageReceived, AddressOf onMessage
         
         ' Connect Discord
         Try
-            Dim dotask As Task = Connect(TokenType.Bot, "############### YOUR oAuthToken ###############")
+            Await Connect(TokenType.Bot, "############### YOUR oAuthToken ###############")
+            Await discordEv.StartAsync()
         Catch ex As Exception
             Dim result As Integer = MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK)
         End Try
     End Sub
 
-    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+    Private Async Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         ' Disconnect Discord
         If discordEv.LoginState = LoginState.LoggedIn Then
-            Dim dotask As Task = Disconnect()
+            Await Disconnect()
         End If
-        discordEv.StopAsync()
+        Await discordEv.StopAsync()
     End Sub
     
     Private Delegate Sub mUpdateCaption(ByVal sCaption As String)
